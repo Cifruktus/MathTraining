@@ -1,0 +1,37 @@
+name: mathtraining
+description: A Flutter application for training computational skills
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  path_provider: ^1.6.18
+  shared_preferences: ^0.5.12
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/icon.png"
+
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/JetBrainsMono-Light.ttf
+        - asset: assets/JetBrainsMono-Medium.ttf
+          weight: 700
