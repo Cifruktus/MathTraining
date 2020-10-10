@@ -1,6 +1,8 @@
 # mathtraining
 
-A new Flutter application.
+A mobile application for training computational skills. (Such as subtraction, addition and multiplication)
+Made with Flutter.
+At the moment tested only on android devices.
 
 ## How to build
 
