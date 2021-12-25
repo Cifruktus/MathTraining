@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: false
+    always_use_package_imports: true
+    avoid_relative_lib_imports: true
+    no_adjacent_strings_in_list: true
+    use_build_context_synchronously: true;
+
+
