@@ -38,6 +38,22 @@ CustomThemeData customThemeData = CustomThemeData(
     color: primaryColor,
     fontWeight: FontWeight.bold,
   ),
+
+  homePageMainStatText: new TextStyle(
+    fontSize: 40,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  ),
+  homePageStatText: new TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  ),
+  cardTitleText: new TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Color(0xFFC56C35),
+  ),
 );
 
 @immutable
@@ -50,6 +66,10 @@ class CustomThemeData {
   final TextStyle cardText;
   final TextStyle cardTextHighlighted;
 
+  final TextStyle homePageStatText;
+  final TextStyle homePageMainStatText;
+  final TextStyle cardTitleText;
+
   CustomThemeData({
     required this.cardText,
     required this.cardTextHighlighted,
@@ -57,5 +77,8 @@ class CustomThemeData {
     required this.secondaryColor,
     required this.textOnWhiteColor,
     required this.mistakeHighlightColor,
+    required this.homePageStatText,
+    required this.homePageMainStatText,
+    required this.cardTitleText,
   });
 }

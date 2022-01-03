@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math_training/home/view/widgets.dart';
 import 'package:math_training/math_game/models/result.dart';
 import 'package:math_training/math_game/view/math_game_page.dart';
 import 'package:math_training/scores/cubit/scored_bloc.dart';
@@ -11,6 +14,20 @@ import 'package:math_training/widgets/custom_theme.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
+
+  static void openSettings(BuildContext context) {
+    Navigator.of(context).push(
+        SettingsPage.route(context.read<AppSettingsCubit>(), context.read<ScoresCubit>()));
+  }
+
+  static void openGameView(BuildContext context) async {
+    var result = await Navigator.of(context).push(
+      MathGameView.route(context.read<AppSettingsCubit>()),
+    );
+    if (result is MathTestResult) {
+      context.read<ScoresCubit>().addScore(result);
+    }
+  }
 
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => page());
@@ -28,136 +45,234 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: NestedScrollView(
-            headerSliverBuilder: (__, _) {
-              return <Widget>[HomePageAppBar()];
-            },
-            body: ScoresList()));
+        body: CustomScrollView(
+      slivers: [
+        TransitionAppBar(),
+        ScoresList(),
+      ],
+    ));
   }
 }
 
-class HomePageAppBar extends StatelessWidget {
+class TransitionAppBar extends StatelessWidget {
+  TransitionAppBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      titleSpacing: 0,
-      expandedHeight: 200.0,
-      floating: false,
+    final MediaQueryData data = MediaQuery.of(context);
+    EdgeInsets padding = data.padding;
+
+    var sessionType = context.select((AppSettingsCubit s) => s.state.mathSessionType);
+    var problemsSolved = context.select((ScoresCubit s) => s.state.getProblemsSolvedBySessionName(sessionType));
+    var averageSpeed = context.select((ScoresCubit s) => s.state.getAverageSpeedBySessionName(sessionType));
+    var averageAccuracy = context.select((ScoresCubit s) => s.state.getAverageAccuracyBySessionName(sessionType));
+
+    return SliverPersistentHeader(
       pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Text("Training",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            )),
-        background: SliverAppBarBG(),
+      delegate: _TransitionAppBarDelegate(
+        safeTopPadding: padding.top,
+        problemsSolved: problemsSolved,
+        averageAccuracy: averageAccuracy,
+        averageSpeed: averageSpeed,
+        sessionType: sessionType,
       ),
-      actions: <Widget>[
-        new IconButton(
-            icon: new Icon(Icons.settings),
-            onPressed: () => Navigator.of(context).push(
-                  SettingsPage.route(context.read<AppSettingsCubit>(),context.read<ScoresCubit>()),
-                ))
-      ],
     );
   }
 }
 
-class SliverAppBarBG extends StatelessWidget {
+class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
+  static const kAppBarHeight = 56.0;
+  static const kButtonRadius = 30.0;
+  static const kButtonCutoutRadius = 40.0;
+  static const kBottomPadding = 8.0;
+
+  final double extent = 300;
+  final double safeTopPadding;
+
+  final double averageSpeed;
+  final double averageAccuracy;
+  final int problemsSolved;
+  final String sessionType;
+
+  _TransitionAppBarDelegate({
+    required this.sessionType,
+    required this.averageSpeed,
+    required this.averageAccuracy,
+    required this.problemsSolved,
+    required this.safeTopPadding,
+  });
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    double extendedValue = 1 - shrinkOffset / (maxExtent - minExtent);
+    extendedValue = min(max(0, extendedValue), 1);
+
+    double reflectionOpacity = min(max(0, (extendedValue - 0.7) * 3), 1);
+    double smallStatsOpacity = min(max(0, (extendedValue - 0.1) * 1.5), 1);
+    double centerStatsOpacity = min(max(0, (extendedValue - 0.4) * 2), 1);
+
     var theme = CustomTheme.of(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment(0.0, 1.0),
-          colors: [theme.secondaryColor, theme.primaryColor],
-          tileMode: TileMode.repeated,
-        ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
-          child: IconButton(
-            icon: Icon(Icons.play_arrow),
-            color: Colors.white,
-            iconSize: 80,
-            onPressed: () async {
-              var result = await Navigator.of(context).push(
-                MathGameView.route(context.read<AppSettingsCubit>()),
-              );
-              if (result is MathTestResult) {
-                context.read<ScoresCubit>().addScore(result);
-              }
-            },
+    var bottomColor = Color.lerp(theme.primaryColor, theme.secondaryColor, extendedValue)!;
+    var buttonColor = Color.lerp(theme.primaryColor, bottomColor, 0.8)!;
+
+    var accuracyPercent = (averageAccuracy * 100).toStringAsFixed(1);
+    var speedRounded = averageSpeed.toStringAsFixed(1);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: kBottomPadding),
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill( // background decoration and shape
+            child: Container(
+              margin: EdgeInsets.only(bottom: kButtonRadius),
+              decoration: ShapeDecoration(
+                  shadows: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6.0,
+                      spreadRadius: 2.0,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment(0.0, 1.0),
+                    colors: [theme.primaryColor, bottomColor],
+                  ),
+                  shape: AppBarShapeBorder(cutoutRadius: kButtonCutoutRadius)),
+            ),
           ),
-        ),
+          Positioned.fill( // reflection
+            child: Opacity(
+              opacity: reflectionOpacity,
+              child: Padding(
+                padding: EdgeInsets.only(top: (1 - extendedValue) * 100),
+                child: Container(
+                  decoration: ShapeDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment(0.0, 1.0),
+                      colors: [Colors.white12, Color(0x00FFFFFF)],
+                    ),
+                    shape: ReflectionShape(
+                        leftPadding: safeTopPadding + kAppBarHeight * 2,
+                        rightPadding: safeTopPadding + kAppBarHeight,
+                        radius: 1.3), //CustomShapeBorder()
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Align(
+              alignment: Alignment.topCenter,
+              child: AppBar(
+                toolbarHeight: kAppBarHeight,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                actions: <Widget>[
+                  new IconButton(
+                    icon: new Icon(Icons.settings),
+                    onPressed: () => MainPage.openSettings(context),
+                  ),
+                ],
+                title: Row(children: [
+                  Text("Training"),
+                  Opacity(opacity: smallStatsOpacity, child: Text(" - ${sessionType}")),
+                ]),
+              )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: StartButton(
+              size: kButtonRadius * 2,
+              color: buttonColor,
+              onPressed: () => MainPage.openGameView(context),
+            ),
+          ),
+          Align(
+              alignment: Alignment.center,
+              child: AppBarStatText(
+                opacity: centerStatsOpacity,
+                mainData: true,
+                name: "Problems solved",
+                value: "$problemsSolved",
+              )),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: FractionallySizedBox(
+              widthFactor: 0.5,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: kButtonCutoutRadius, right: kButtonCutoutRadius),
+                child: AppBarStatText(
+                  opacity: smallStatsOpacity,
+                  name: "Speed",
+                  value: "${speedRounded} p/min",
+                ),
+              ),
+            ),
+          ),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: FractionallySizedBox(
+                widthFactor: 0.5,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: kButtonCutoutRadius, left: kButtonCutoutRadius),
+                  child: AppBarStatText(
+                    opacity: smallStatsOpacity,
+                    name: "Accuracy",
+                    value: "${accuracyPercent}%",
+                  ),
+                ),
+              )),
+        ],
       ),
     );
+  }
+
+  @override
+  double get maxExtent => extent;
+
+  @override
+  double get minExtent => safeTopPadding + kButtonRadius + kAppBarHeight + kBottomPadding;
+
+  @override
+  bool shouldRebuild(covariant _TransitionAppBarDelegate oldDelegate) {
+    return sessionType != oldDelegate.sessionType ||
+        problemsSolved != oldDelegate.problemsSolved ||
+        averageAccuracy != oldDelegate.averageAccuracy ||
+        averageSpeed != oldDelegate.averageSpeed ||
+        safeTopPadding != oldDelegate.safeTopPadding ||
+        extent != oldDelegate.extent;
   }
 }
 
 class ScoresList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var scores = context.select((ScoresCubit scores) => scores.state.mathTestScores);
+    var sessionType = context.select((AppSettingsCubit s) => s.state.mathSessionType);
+    var scores = context.select((ScoresCubit scores) => scores.state.getResultsBySessionName(sessionType)).toList();
+
     var theme = CustomTheme.of(context);
 
     if (scores.isEmpty) {
-      return Center(child: Text("No scores", style: theme.cardTextHighlighted,));
+      return SliverFillRemaining(
+        child: Center(
+            child: Text(
+          "No scores",
+          style: theme.cardTextHighlighted,
+        )),
+      );
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: scores.reversed.map((result) {
-          return MathTestResultCard(result);
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class MathTestResultCard extends StatelessWidget {
-  final MathTestResult result;
-
-  const MathTestResultCard(this.result, {Key? key}) : super(key: key);
-
-  // It's better to use intl
-  String _getTimeString(DateTime time) {
-    var year = time.year.toString();
-    var month = time.month.toString().padLeft(2, "0");
-    var day = time.day.toString().padLeft(2, "0");
-    var hours = time.hour.toString().padLeft(2, "0");
-    var minutes = time.minute.toString().padLeft(2, "0");
-    return "$day.$month.$year  $hours:$minutes";
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = CustomTheme.of(context);
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Center(child: Text(_getTimeString(result.time), style: theme.cardTextHighlighted,)),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text("Correct: ${result.correct}\n"
-                  "Incorrect: ${result.incorrect}\n"
-                  "Speed: ${result.speed}\n"
-                  "Duration: ${result.duration}\n"
-                  "Session type: ${result.type}",
-              style: theme.cardText,),
-            ),
-          ],
-        ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        return MathTestResultCard(scores[scores.length - 1 - index]);
+      },
+      childCount: scores.length
       ),
     );
   }
