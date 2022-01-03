@@ -52,7 +52,7 @@ CustomThemeData customThemeData = CustomThemeData(
   cardTitleText: new TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
-    color: Color(0xFFC56C35),
+    color: Colors.white,
   ),
 );
 

@@ -6,6 +6,8 @@ import 'package:math_training/math_game/models/result.dart';
 import 'package:math_training/widgets/custom_theme.dart';
 
 class MathTestResultCard extends StatelessWidget {
+  static const divider = Divider(color: Colors.white54);
+
   final MathTestResult result;
 
   const MathTestResultCard(this.result, {Key? key}) : super(key: key);
@@ -24,43 +26,66 @@ class MathTestResultCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = CustomTheme.of(context);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                  child: Text(
-                _getTimeString(result.time),
-                style: theme.cardTitleText,
-              )),
-            ),
-            DefaultTextStyle.merge(
-              style: theme.cardText,
-              child: Column(
-                children: [
-                  _ResultsCardNameValue(
-                    name: Text("Solved"),
-                    value: Text("${result.correct} / ${result.questions}"),
-                  ),
-                  Divider(),
-                  _ResultsCardNameValue(
-                    name: Text("Duration"),
-                    value: Text("${result.duration} sec"),
-                  ),
-                  Divider(),
-                  _ResultsCardNameValue(
-                    name: Text("Speed"),
-                    value: Text("${result.speed} p/min"),
-                  ),
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 6.0,
+              spreadRadius: 2.0,
+              offset: Offset(2.0, 2.0),
             ),
           ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomRight,
+            colors: [
+              theme.primaryColor,
+              Color.lerp(theme.primaryColor, theme.secondaryColor, 0.33)!,
+              theme.secondaryColor,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Center(
+                    child: Text(
+                  _getTimeString(result.time),
+                  style: theme.cardTitleText,
+                )),
+              ),
+              DefaultTextStyle.merge(
+                style: theme.cardText.copyWith(color: Colors.white),
+                child: Column(
+                  children: [
+                    _ResultsCardNameValue(
+                      name: Text("Solved"),
+                      value: Text("${result.correct} / ${result.questions}"),
+                    ),
+                    divider,
+                    _ResultsCardNameValue(
+                      name: Text("Duration"),
+                      value: Text("${result.duration} sec"),
+                    ),
+                    divider,
+                    _ResultsCardNameValue(
+                      name: Text("Speed"),
+                      value: Text("${result.speed} p/min"),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
