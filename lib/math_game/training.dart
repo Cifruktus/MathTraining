@@ -24,8 +24,8 @@ class MathConstants {
         return EasyQuestionGenerator();
       case normalQuestionGeneratorName:
         return NormalQuestionGenerator();
-      case normalQuestionGeneratorName:
-        return NormalQuestionGenerator();
+      case hardQuestionGeneratorName:
+        return HardQuestionGenerator();
       case hexReadQuestionGeneratorName:
         return HexQuestionGenerator();
     }
