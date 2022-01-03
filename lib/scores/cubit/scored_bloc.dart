@@ -12,6 +12,34 @@ class Scores {
 
   const Scores({this.mathTestScores = const []});
 
+  Iterable<MathTestResult> getResultsBySessionName(String name){
+    return mathTestScores.where((r) => r.type == name);
+  }
+
+  int getProblemsSolvedBySessionName(String name){
+    return mathTestScores
+        .where((r) => r.type == name)
+        .fold(0, (int sum, r) => sum + r.correct);
+  }
+
+  double getAverageAccuracyBySessionName(String name) {
+    var selectedScores = mathTestScores.where((r) => r.type == name);
+    var problemCount = selectedScores.fold(0, (int sum, r) => sum + r.questions);
+    var correct = selectedScores.fold(0, (int sum, r) => sum + r.correct);
+
+    if (problemCount == 0) return 0;
+    return correct / problemCount;
+  }
+
+  double getAverageSpeedBySessionName(String name) {
+    var selectedScores = mathTestScores.where((r) => r.type == name);
+    var totalProblems = selectedScores.fold(0, (int sum, r) => sum + r.correct);
+    var totalTime = selectedScores.fold(0, (int sum, r) => sum + r.duration) / 60; // converting to minutes
+
+    if (totalTime == 0) return 0;
+    return totalProblems / totalTime;
+  }
+
   static Scores fromJson(Map<String, dynamic> json){
     return _$ScoresFromJson(json);
   }
