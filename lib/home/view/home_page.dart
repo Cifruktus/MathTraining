@@ -186,14 +186,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 ]),
               )),
           Align(
-            alignment: Alignment.bottomCenter,
-            child: StartButton(
-              size: kButtonRadius * 2,
-              color: buttonColor,
-              onPressed: () => MainPage.openGameView(context),
-            ),
-          ),
-          Align(
               alignment: Alignment.center,
               child: AppBarStatText(
                 opacity: centerStatsOpacity,
@@ -228,6 +220,14 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                   ),
                 ),
               )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: StartButton(
+              size: kButtonRadius * 2,
+              color: buttonColor,
+              onPressed: () => MainPage.openGameView(context),
+            ),
+          ),
         ],
       ),
     );
