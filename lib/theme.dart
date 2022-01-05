@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0xFFC56C35);
-const Color secondaryColor = Color(0xFF890E23);
+const Color secondaryColor = Color(0xFF8B0145);
 const Color textOnWhiteColor = Color(0xFF3D1220);
 const Color mistakeHighlightColor = Color(0xFFD45562);
 
