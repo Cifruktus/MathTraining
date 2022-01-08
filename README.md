@@ -1,6 +1,14 @@
 # Math Training app
 
-A mobile application for training computational skills. Addition, multiplication, and more sophisticated things like converting hex numbers to decimal ones
+A mobile application for training mental math skills.
+
+![app preview](docs/images/preview.png)
+
+The app has several different modes, including simple addition/subtraction training and and more tricky ones like converting hex numbers to decimal.
+
+The app will save results of each training so you can track your progress.
+
+
 
 
 ## How to build
