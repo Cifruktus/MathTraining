@@ -46,25 +46,27 @@ class InputTextProcessor {
   }
 }
 
-class GameKeyboardInputWrapper extends StatefulWidget {
-  final Widget child;
+class GameInputScaffold extends StatefulWidget {
+  final Widget body;
+  final PreferredSizeWidget appBar;
   final bool numericInputEnabled;
   final void Function(String) onChange;
   final void Function(String) onApply;
 
-  const GameKeyboardInputWrapper({
+  const GameInputScaffold({
     Key? key,
     this.numericInputEnabled = true,
     required this.onChange,
     required this.onApply,
-    required this.child,
+    required this.body,
+    required this.appBar
   }) : super(key: key);
 
   @override
-  _GameKeyboardInputWrapperState createState() => _GameKeyboardInputWrapperState();
+  _GameInputScaffoldState createState() => _GameInputScaffoldState();
 }
 
-class _GameKeyboardInputWrapperState extends State<GameKeyboardInputWrapper> {
+class _GameInputScaffoldState extends State<GameInputScaffold> {
   static const int maxNumberLength = 7;
   bool focused = false;
   late FocusNode focusNode;
@@ -78,11 +80,6 @@ class _GameKeyboardInputWrapperState extends State<GameKeyboardInputWrapper> {
       onChange: widget.onChange,
     );
     focusNode = new FocusNode();
-    focusNode.addListener(() {
-      setState(() {
-        focused = focusNode.hasFocus;
-      });
-    });
   }
 
   void _apply(){
@@ -109,29 +106,25 @@ class _GameKeyboardInputWrapperState extends State<GameKeyboardInputWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => focusNode.requestFocus(), // workaround to avoid losing focus
-      child: KeyboardListener(
-        focusNode: focusNode,
-        autofocus: true,
-        onKeyEvent: _processKeyboardEvent,
-        child: Column(
+    return KeyboardListener(
+      focusNode: focusNode,
+      autofocus: true,
+      onKeyEvent: _processKeyboardEvent,
+      child: Scaffold(
+        appBar: widget.appBar,
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
               flex: 4,
-              child: Container(
-                color: Colors.transparent,
-                child: widget.child,
-              ),
+              child: widget.body,
             ),
             Flexible(
               flex: 3,
               child: NumericKeyboard(
                 numericInputEnabled: widget.numericInputEnabled,
-                enabled: focused,
                 onBackspace: inputText.backspace,
                 onEnter: _apply,
                 onInput: inputText.add,

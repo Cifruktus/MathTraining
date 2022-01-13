@@ -5,7 +5,7 @@ import 'package:math_training/math_game/bloc/game_events.dart';
 import 'package:math_training/math_game/bloc/game_state.dart';
 import 'package:math_training/settings/cubit/app_settings_cubit.dart';
 import 'package:math_training/widgets/custom_theme.dart';
-import 'package:math_training/widgets/numeric_keyboard.dart';
+import 'package:math_training/widgets/game_input_scaffold.dart';
 
 
 class MathGameView extends StatelessWidget {
@@ -38,12 +38,7 @@ class MathGameView extends StatelessWidget {
         finishGame(context);
         return false;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: GameAppTitle(),
-        ),
-        body: PageContent(),
-      ),
+      child: PageContent(),
     );
   }
 }
@@ -249,11 +244,14 @@ class PageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     var state = context.select((MathGameBloc bloc) => bloc.state.stateType);
 
-    return GameKeyboardInputWrapper(
-      onApply: (s) => applyPressed(context,s),
-      onChange: (s) => onChange(context,s),
+    return GameInputScaffold(
+      onApply: (s) => applyPressed(context, s),
+      onChange: (s) => onChange(context, s),
       numericInputEnabled: state == GameStateType.going,
-      child: MainGameWindow(),
+      appBar: AppBar(
+        title: GameAppTitle(),
+      ),
+      body: MainGameWindow(),
     );
   }
 
