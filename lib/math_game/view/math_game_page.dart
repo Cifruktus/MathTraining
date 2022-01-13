@@ -42,18 +42,7 @@ class MathGameView extends StatelessWidget {
         appBar: AppBar(
           title: GameAppTitle(),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const <Widget>[
-            Flexible(
-              flex: 4,
-              child: MainGameWindow(),
-            ),
-            Keyboard(),
-          ],
-        ),
+        body: PageContent(),
       ),
     );
   }
@@ -253,20 +242,18 @@ class QuestionTextField extends StatelessWidget {
   }
 }
 
-class Keyboard extends StatelessWidget {
-  const Keyboard({Key? key}) : super(key: key);
+class PageContent extends StatelessWidget {
+  const PageContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var state = context.select((MathGameBloc bloc) => bloc.state.stateType);
 
-    return Flexible(
-      flex: 3,
-      child: NumericKeyboard(
-        onApply: (s) => applyPressed(context,s),
-        onChange: (s) => onChange(context,s),
-        numericInputEnabled: state == GameStateType.going,
-      ),
+    return GameKeyboardInputWrapper(
+      onApply: (s) => applyPressed(context,s),
+      onChange: (s) => onChange(context,s),
+      numericInputEnabled: state == GameStateType.going,
+      child: MainGameWindow(),
     );
   }
 
