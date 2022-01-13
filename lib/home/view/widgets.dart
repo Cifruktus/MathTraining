@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:math_training/math_game/models/result.dart';
 import 'package:math_training/widgets/custom_theme.dart';
 
