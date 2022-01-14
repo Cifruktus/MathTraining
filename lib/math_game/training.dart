@@ -9,7 +9,7 @@ class MathConstants {
   static const hardQuestionGeneratorName = "Hard";
   static const hexReadQuestionGeneratorName = "Hex decode";
 
-  static const String sessionDefaultDifficulty = normalQuestionGeneratorName;
+  static const String sessionDefaultDifficulty = easyQuestionGeneratorName;
 
   static const sessionDifficultyNames = [
     easyQuestionGeneratorName,
@@ -32,7 +32,7 @@ class MathConstants {
     return NormalQuestionGenerator();
   }
 
-  static const defaultDuration = Duration(minutes: 5);
+  static const defaultDuration = Duration(minutes: 1);
 
   static const List<Duration> durationOptions = [
     Duration(minutes: 1),
