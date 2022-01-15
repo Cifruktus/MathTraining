@@ -260,7 +260,7 @@ class NumericKeyboard extends StatelessWidget {
   }
 }
 
-class _KeyboardButton extends StatelessWidget {
+class _KeyboardButton extends StatefulWidget {
   final String text;
   final Function() onPress;
   final bool enabled;
@@ -273,22 +273,59 @@ class _KeyboardButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<_KeyboardButton> createState() => _KeyboardButtonState();
+}
+
+class _KeyboardButtonState extends State<_KeyboardButton> {
+  bool pressed = false;
+
+  @override
   Widget build(BuildContext context) {
     return Flexible(
         child: GestureDetector(
-      onTapDown: enabled ? (_) => onPress() : null,
+      onTapDown: (_) => _onButtonDown(),
+      onTapUp: (_) => _onButtonUp(),
+      onTapCancel: () => _onButtonUp(),
       child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.white60)),
+        decoration: BoxDecoration(
+          color: pressed ? Colors.black12 : null,
+          border: Border.all(color: Colors.white60),
+        ),
         child: Center(
           child: FittedBox(
             fit: BoxFit.fitHeight,
             child: Text(
-              text,
-              style: TextStyle(color: enabled ? Colors.white60 : Colors.white24, fontSize: 69),
+              widget.text,
+              style: TextStyle(color: widget.enabled ? Colors.white60 : Colors.white24, fontSize: 69),
             ),
           ),
         ),
       ),
     ));
+  }
+
+  void _onButtonDown() {
+    if (!widget.enabled) return;
+
+    widget.onPress();
+
+    setState(() {
+      pressed = true;
+    });
+  }
+
+  void _onButtonUp() {
+    if (!widget.enabled) return;
+
+    setState(() {
+      pressed = false;
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant _KeyboardButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!widget.enabled) pressed = false;
   }
 }
