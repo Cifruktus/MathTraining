@@ -8,7 +8,7 @@ The app has several different modes, including simple addition/subtraction train
 
 The app will save results of each training so you can track your progress.
 
-
+You can try the online version out [here.](https://cifruktus.github.io/MathTrainingWebapp/#/)
 
 
 ## How to build
