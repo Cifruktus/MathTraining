@@ -89,7 +89,7 @@ class _GameInputScaffoldState extends State<GameInputScaffold> {
 
   void _processKeyboardEvent(KeyEvent event) {
     if (event is KeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.enter) {
+      if (event.logicalKey == LogicalKeyboardKey.enter || event.logicalKey == LogicalKeyboardKey.numpadEnter) {
         _apply();
         return;
       } else if (event.logicalKey == LogicalKeyboardKey.backspace) {
