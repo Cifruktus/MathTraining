@@ -4,7 +4,9 @@ import 'package:math_training/math_game/training.dart';
 import 'package:math_training/scores/cubit/scored_bloc.dart';
 import 'package:math_training/settings/cubit/app_settings_cubit.dart';
 import 'package:math_training/settings/view/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+final Uri githubPage = Uri.parse('https://github.com/Cifruktus/MathTraining');
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -33,6 +35,7 @@ class SettingsPage extends StatelessWidget {
           MathDurationEditor(),
           MathSessionEditor(),
           ClearScoresButton(),
+          GithubPageButton(),
         ],
       ),
     );
@@ -69,6 +72,21 @@ class ClearScoresButton extends StatelessWidget {
     if (answer == true) {
       context.read<ScoresCubit>().clearScores();
     }
+  }
+}
+
+class GithubPageButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return NameValueCard(
+      onTap: () => launchUrl(githubPage),
+      name: Text("View project on Github",
+        style: TextStyle(
+          color: Colors.blueAccent[700]
+        ),
+      ),
+      value: Container(),
+    );
   }
 }
 
