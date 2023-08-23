@@ -33,6 +33,8 @@ class MathGameBloc extends Bloc<MathGameEvent, MathGameState> {
         _questions = questions,
         _duration = duration,
         super(MathGameState(
+          answered: [],
+          inputValue: '',
           duration: duration.inSeconds,
           stateType: GameStateType.ready,
           currentQuestion: questions.next(),
