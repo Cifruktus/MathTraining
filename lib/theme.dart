@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'theme.freezed.dart';
 
 const Color primaryColor = Color(0xFFC56C35);
 const Color secondaryColor = Color(0xFF8B0145);
@@ -54,29 +57,17 @@ CustomThemeData customThemeData = CustomThemeData(
   ),
 );
 
-@immutable
-class CustomThemeData {
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color textOnWhiteColor;
-  final Color mistakeHighlightColor;
-
-  final TextStyle cardText;
-  final TextStyle cardTextHighlighted;
-
-  final TextStyle homePageStatText;
-  final TextStyle homePageMainStatText;
-  final TextStyle cardTitleText;
-
-  CustomThemeData({
-    required this.cardText,
-    required this.cardTextHighlighted,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.textOnWhiteColor,
-    required this.mistakeHighlightColor,
-    required this.homePageStatText,
-    required this.homePageMainStatText,
-    required this.cardTitleText,
-  });
+@freezed
+abstract class CustomThemeData with _$CustomThemeData {
+  const factory CustomThemeData({
+    required Color primaryColor,
+    required Color secondaryColor,
+    required Color textOnWhiteColor,
+    required Color mistakeHighlightColor,
+    required TextStyle cardText,
+    required TextStyle cardTextHighlighted,
+    required TextStyle homePageStatText,
+    required TextStyle homePageMainStatText,
+    required TextStyle cardTitleText,
+  }) = _CustomThemeData;
 }
