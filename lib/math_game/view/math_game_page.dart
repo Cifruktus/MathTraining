@@ -4,7 +4,7 @@ import 'package:math_training/math_game/bloc/game_bloc.dart';
 import 'package:math_training/math_game/bloc/game_events.dart';
 import 'package:math_training/math_game/bloc/game_state.dart';
 import 'package:math_training/settings/cubit/app_settings_cubit.dart';
-import 'package:math_training/widgets/custom_theme.dart';
+import 'package:math_training/theme.dart';
 import 'package:math_training/widgets/game_input_scaffold.dart';
 
 
@@ -64,7 +64,7 @@ class BeforeGameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var game = context.watch<MathGameBloc>();
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
 
     return Column(
       children: [
@@ -109,7 +109,7 @@ class AfterGameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var questions = context.select((MathGameBloc bloc) => bloc.state.answered);
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
 
     return ListView.builder(
       itemCount: questions.length,

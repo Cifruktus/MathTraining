@@ -24,9 +24,12 @@ const MaterialColor primaryColorSwatch = MaterialColor(0xFFC56C35, <int, Color>{
 ThemeData materialThemeData = ThemeData(
   fontFamily: "JetBrainsMono",
   primarySwatch: primaryColorSwatch,
+  extensions: [
+    AppTheme(customThemeData)
+  ],
 );
 
-CustomThemeData customThemeData = CustomThemeData(
+AppThemeData customThemeData = AppThemeData(
   primaryColor: primaryColor,
   secondaryColor: secondaryColor,
   textOnWhiteColor: textOnWhiteColor,
@@ -57,9 +60,26 @@ CustomThemeData customThemeData = CustomThemeData(
   ),
 );
 
+class AppTheme extends ThemeExtension<AppTheme> {
+  final AppThemeData data;
+
+  AppTheme(this.data);
+
+  @override
+  ThemeExtension<AppTheme> copyWith({AppThemeData? data}) {
+    return AppTheme(data ?? this.data);
+  }
+
+  @override
+  ThemeExtension<AppTheme> lerp(covariant ThemeExtension<AppTheme>? other, double t) {
+    throw UnimplementedError();
+  }
+
+}
+
 @freezed
-abstract class CustomThemeData with _$CustomThemeData {
-  const factory CustomThemeData({
+abstract class AppThemeData with _$AppThemeData {
+  const factory AppThemeData({
     required Color primaryColor,
     required Color secondaryColor,
     required Color textOnWhiteColor,
@@ -69,5 +89,5 @@ abstract class CustomThemeData with _$CustomThemeData {
     required TextStyle homePageStatText,
     required TextStyle homePageMainStatText,
     required TextStyle cardTitleText,
-  }) = _CustomThemeData;
+  }) = _AppThemeData;
 }

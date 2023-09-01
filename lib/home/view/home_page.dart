@@ -8,7 +8,7 @@ import 'package:math_training/math_game/view/math_game_page.dart';
 import 'package:math_training/scores/cubit/scored_bloc.dart';
 import 'package:math_training/settings/cubit/app_settings_cubit.dart';
 import 'package:math_training/settings/view/settings_page.dart';
-import 'package:math_training/widgets/custom_theme.dart';
+import 'package:math_training/theme.dart';
 
 
 class MainPage extends StatelessWidget {
@@ -114,7 +114,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     double smallStatsOpacity = min(max(0, (extendedValue - 0.1) * 1.5), 1);
     double centerStatsOpacity = min(max(0, (extendedValue - 0.4) * 2), 1);
 
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
 
     var bottomColor = Color.lerp(theme.primaryColor, theme.secondaryColor, extendedValue)!;
     var buttonColor = Color.lerp(theme.primaryColor, bottomColor, 0.8)!;
@@ -255,7 +255,7 @@ class ScoresList extends StatelessWidget {
     var sessionType = context.select((AppSettingsCubit s) => s.state.mathSessionType);
     var scores = context.select((ScoresCubit scores) => scores.state.getResultsBySessionName(sessionType)).toList();
 
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
 
     if (scores.isEmpty) {
       return SliverFillRemaining(

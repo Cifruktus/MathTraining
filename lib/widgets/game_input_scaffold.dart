@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:math_training/widgets/custom_theme.dart';
+import 'package:math_training/theme.dart';
 
 class InputTextProcessor {
   final int maxLength;
@@ -156,7 +156,7 @@ class NumericKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

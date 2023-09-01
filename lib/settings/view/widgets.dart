@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_training/widgets/custom_theme.dart';
+import 'package:math_training/theme.dart';
 
 class NameValueCard extends StatelessWidget {
   final Widget name;
@@ -15,7 +15,7 @@ class NameValueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = CustomTheme.of(context);
+    var theme = Theme.of(context).extension<AppTheme>()!.data;
 
     return Card(
         child: Padding(
