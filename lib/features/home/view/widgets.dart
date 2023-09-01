@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:math_training/math_game/models/result.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/core/scores/models/result.dart';
+import 'package:math_training/widgets/theme.dart';
 
 class MathTestResultCard extends StatelessWidget {
   static const divider = Divider(color: Colors.white54);

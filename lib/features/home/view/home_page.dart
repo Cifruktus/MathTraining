@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math_training/home/view/widgets.dart';
-import 'package:math_training/math_game/models/result.dart';
-import 'package:math_training/math_game/view/math_game_page.dart';
-import 'package:math_training/scores/cubit/scored_bloc.dart';
-import 'package:math_training/settings/cubit/app_settings_cubit.dart';
-import 'package:math_training/settings/view/settings_page.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
+import 'package:math_training/features/home/view/widgets.dart';
+import 'package:math_training/features/math_game/view/math_game_page.dart';
+import 'package:math_training/features/settings/view/settings_page.dart';
+import 'package:math_training/core/scores/models/result.dart';
+import 'package:math_training/core/scores/bloc/scored_bloc.dart';
+import 'package:math_training/widgets/theme.dart';
 
 
 class MainPage extends StatelessWidget {

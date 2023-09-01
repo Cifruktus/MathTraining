@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:math_training/math_game/training.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
 
 part 'app_settings_cubit.g.dart';
 
@@ -33,8 +33,8 @@ class AppSettings {
   }
 
   factory AppSettings.defaultValue () => const AppSettings(
-    mathSessionDuration: MathConstants.defaultDuration,
-    mathSessionType: MathConstants.sessionDefaultDifficulty,
+    mathSessionDuration: defaultDuration,
+    mathSessionType: sessionDefaultDifficulty,
   );
 
   factory AppSettings.fromJson(Map<String, dynamic> json) => _$AppSettingsFromJson(json);

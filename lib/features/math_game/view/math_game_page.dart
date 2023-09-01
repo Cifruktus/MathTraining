@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math_training/math_game/bloc/game_bloc.dart';
-import 'package:math_training/math_game/bloc/game_events.dart';
-import 'package:math_training/math_game/bloc/game_state.dart';
-import 'package:math_training/settings/cubit/app_settings_cubit.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
+import 'package:math_training/features/math_game/bloc/game_bloc.dart';
+import 'package:math_training/features/math_game/bloc/game_events.dart';
+import 'package:math_training/features/math_game/bloc/game_state.dart';
+import 'package:math_training/widgets/theme.dart';
 import 'package:math_training/widgets/game_input_scaffold.dart';
 
 

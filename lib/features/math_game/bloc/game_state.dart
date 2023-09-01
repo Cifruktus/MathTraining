@@ -1,5 +1,7 @@
-import 'package:math_training/math_game/models/question.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:math_training/features/math_game/util/question.dart';
+
 
 part 'game_state.freezed.dart';
 

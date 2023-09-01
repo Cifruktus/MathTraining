@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:math_training/math_game/bloc/game_events.dart';
-import 'package:math_training/math_game/bloc/game_state.dart';
-import 'package:math_training/math_game/models/result.dart';
-import 'package:math_training/math_game/ticker.dart';
-import 'package:math_training/math_game/training.dart';
-import 'package:math_training/settings/cubit/app_settings_cubit.dart';
+
+import 'package:math_training/core/scores/models/result.dart';
+import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
+import 'package:math_training/features/math_game/bloc/game_events.dart';
+import 'package:math_training/features/math_game/bloc/game_state.dart';
+import 'package:math_training/features/math_game/util/ticker.dart';
+import 'package:math_training/features/math_game/util/training.dart';
 
 class MathGameBloc extends Bloc<MathGameEvent, MathGameState> {
   final Ticker _ticker;
@@ -19,7 +20,7 @@ class MathGameBloc extends Bloc<MathGameEvent, MathGameState> {
   StreamSubscription<int>? _tickerSubscription;
 
   factory MathGameBloc.fromSettings(AppSettings settings) {
-    var questions = MathConstants.getQuestionGenerator(settings.mathSessionType);
+    var questions = getQuestionGenerator(settings.mathSessionType);
     var duration = settings.mathSessionDuration;
 
     return MathGameBloc(

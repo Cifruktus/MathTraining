@@ -1,46 +1,20 @@
 import 'dart:math';
 
-import 'package:math_training/math_game/models/question.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
+import 'package:math_training/features/math_game/util/question.dart';
 
-
-class MathConstants {
-  static const easyQuestionGeneratorName = "Easy";
-  static const normalQuestionGeneratorName = "Normal";
-  static const hardQuestionGeneratorName = "Hard";
-  static const hexReadQuestionGeneratorName = "Hex decode";
-
-  static const String sessionDefaultDifficulty = easyQuestionGeneratorName;
-
-  static const sessionDifficultyNames = [
-    easyQuestionGeneratorName,
-    normalQuestionGeneratorName,
-    hardQuestionGeneratorName,
-    hexReadQuestionGeneratorName,
-  ];
-
-  static QuestionGenerator getQuestionGenerator(String type) {
-    switch (type) {
-      case easyQuestionGeneratorName:
-        return EasyQuestionGenerator();
-      case normalQuestionGeneratorName:
-        return NormalQuestionGenerator();
-      case hardQuestionGeneratorName:
-        return HardQuestionGenerator();
-      case hexReadQuestionGeneratorName:
-        return HexQuestionGenerator();
-    }
-    return NormalQuestionGenerator();
+QuestionGenerator getQuestionGenerator(String type) {
+  switch (type) {
+    case easyQuestionGeneratorName:
+      return EasyQuestionGenerator();
+    case normalQuestionGeneratorName:
+      return NormalQuestionGenerator();
+    case hardQuestionGeneratorName:
+      return HardQuestionGenerator();
+    case hexReadQuestionGeneratorName:
+      return HexQuestionGenerator();
   }
-
-  static const defaultDuration = Duration(minutes: 1);
-
-  static const List<Duration> durationOptions = [
-    Duration(minutes: 1),
-    Duration(minutes: 2),
-    Duration(minutes: 3),
-    Duration(minutes: 5),
-    Duration(minutes: 7),
-  ];
+  return NormalQuestionGenerator();
 }
 
 abstract class QuestionGenerator {
@@ -57,7 +31,7 @@ abstract class QuestionGenerator {
 
 class HardQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => MathConstants.hardQuestionGeneratorName;
+  String get name => hardQuestionGeneratorName;
 
   @override
   Question next() {
@@ -76,7 +50,7 @@ class HardQuestionGenerator extends QuestionGenerator {
 
 class NormalQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => MathConstants.normalQuestionGeneratorName;
+  String get name => normalQuestionGeneratorName;
 
   @override
   Question next() {
@@ -93,7 +67,7 @@ class NormalQuestionGenerator extends QuestionGenerator {
 
 class EasyQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => MathConstants.easyQuestionGeneratorName;
+  String get name => easyQuestionGeneratorName;
 
   @override
   Question next() {
@@ -108,7 +82,7 @@ class EasyQuestionGenerator extends QuestionGenerator {
 
 class HexQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => MathConstants.hexReadQuestionGeneratorName;
+  String get name => hexReadQuestionGeneratorName;
 
   @override
   Question next() {

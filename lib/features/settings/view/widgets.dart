@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/widgets/theme.dart';
 
 class NameValueCard extends StatelessWidget {
   final Widget name;

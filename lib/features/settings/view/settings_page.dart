@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math_training/math_game/training.dart';
-import 'package:math_training/scores/cubit/scored_bloc.dart';
-import 'package:math_training/settings/cubit/app_settings_cubit.dart';
-import 'package:math_training/settings/view/widgets.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
+import 'package:math_training/features/settings/view/widgets.dart';
+import 'package:math_training/core/scores/bloc/scored_bloc.dart';
+import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final Uri githubPage = Uri.parse('https://github.com/Cifruktus/MathTraining');
@@ -103,7 +103,7 @@ class MathDurationEditor extends StatelessWidget {
   }
 
   void _showDurationSelectDialog(BuildContext context) {
-    List<ListDialogElement<Duration>> elements = MathConstants.durationOptions
+    List<ListDialogElement<Duration>> elements = durationOptions
         .map((option) => ListDialogElement(
               value: option,
               child: Text("${option.inMinutes} min"),
@@ -135,7 +135,7 @@ class MathSessionEditor extends StatelessWidget {
   }
 
   void _showDurationSelectDialog(BuildContext context) {
-    List<ListDialogElement<String>> elements = MathConstants.sessionDifficultyNames
+    List<ListDialogElement<String>> elements = sessionDifficultyNames
         .map((option) => ListDialogElement(value: option, child: Text("${option}")))
         .toList();
 

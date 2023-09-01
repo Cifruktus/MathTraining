@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/widgets/theme.dart';
 
 class InputTextProcessor {
   final int maxLength;

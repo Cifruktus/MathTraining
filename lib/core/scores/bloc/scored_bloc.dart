@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:math_training/math_game/models/result.dart';
+import 'package:math_training/core/scores/models/result.dart';
 
 
 part 'scored_bloc.g.dart';

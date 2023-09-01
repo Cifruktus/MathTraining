@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:math_training/home/view/home_page.dart';
-import 'package:math_training/theme.dart';
+import 'package:math_training/features/home/view/home_page.dart';
+import 'package:math_training/widgets/theme.dart';
 
 import 'package:path_provider/path_provider.dart';
 
