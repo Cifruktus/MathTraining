@@ -1,3 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable(createToJson: false, createFactory: false)
 class MathTestResult {
   final int correct;
   final int incorrect;
@@ -17,7 +20,7 @@ class MathTestResult {
     required this.type,
   });
 
-  static MathTestResult fromJson(Map<String, dynamic> map) {
+  factory MathTestResult.fromJson(Map<String, dynamic> map) {
     return MathTestResult(
         correct: map["correct"],
         incorrect: map["incorrect"],
