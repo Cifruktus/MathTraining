@@ -11,15 +11,9 @@ final Uri githubPage = Uri.parse('https://github.com/Cifruktus/MathTraining');
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
-  static Route route(AppSettingsCubit settings, ScoresCubit scores) {
+  static Route route() {
     return MaterialPageRoute<void>(
-      builder: (_) => BlocProvider.value(
-        value: scores,
-        child: BlocProvider.value(
-          value: settings,
-          child: SettingsPage(),
-        ),
-      ),
+      builder: (_) => SettingsPage(),
     );
   }
 

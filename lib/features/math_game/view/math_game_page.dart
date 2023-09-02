@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math_training/core/scores/bloc/scored_bloc.dart';
 import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
 import 'package:math_training/features/math_game/bloc/game_bloc.dart';
 import 'package:math_training/features/math_game/bloc/game_events.dart';
@@ -9,23 +10,21 @@ import 'package:math_training/widgets/game_input_scaffold.dart';
 
 
 class MathGameView extends StatelessWidget {
-  static Route route(AppSettingsCubit settings) {
+  static Route route() {
     return MaterialPageRoute<void>(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: settings,
-                ),
-                BlocProvider(
-                  create: (context) => MathGameBloc.fromSettings(context.read<AppSettingsCubit>().state),
-                ),
-              ],
-              child: const MathGameView(),
-            ));
+      builder: (_) => BlocProvider(
+        create: (context) => MathGameBloc.fromSettings(context.read<AppSettingsCubit>().state),
+        child: const MathGameView(),
+      ),
+    );
   }
 
-  static void finishGame(BuildContext context){
+  static void finishGame(BuildContext context) {
     var game = context.read<MathGameBloc>();
+    var result = game.getResult();
+    if (result != null) {
+      context.read<ScoresCubit>().addScore(result);
+    }
     Navigator.of(context).pop(game.getResult());
   }
 

@@ -6,7 +6,6 @@ import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
 import 'package:math_training/features/home/view/widgets.dart';
 import 'package:math_training/features/math_game/view/math_game_page.dart';
 import 'package:math_training/features/settings/view/settings_page.dart';
-import 'package:math_training/core/scores/models/result.dart';
 import 'package:math_training/core/scores/bloc/scored_bloc.dart';
 import 'package:math_training/widgets/theme.dart';
 
@@ -15,17 +14,11 @@ class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
   static void openSettings(BuildContext context) {
-    Navigator.of(context).push(
-        SettingsPage.route(context.read<AppSettingsCubit>(), context.read<ScoresCubit>()));
+    Navigator.of(context).push(SettingsPage.route());
   }
 
-  static void openGameView(BuildContext context) async {
-    var result = await Navigator.of(context).push(
-      MathGameView.route(context.read<AppSettingsCubit>()),
-    );
-    if (result is MathTestResult) {
-      context.read<ScoresCubit>().addScore(result);
-    }
+  static void openGameView(BuildContext context) {
+    Navigator.of(context).push(MathGameView.route());
   }
 
   static Route route() {
@@ -33,12 +26,7 @@ class MainPage extends StatelessWidget {
   }
 
   static Widget page() {
-    return BlocProvider(
-        create: (context) => AppSettingsCubit(),
-        child: BlocProvider(
-          create: (context) => ScoresCubit(),
-          child: MainPage(),
-        ));
+    return MainPage();
   }
 
   @override
