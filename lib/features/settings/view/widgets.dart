@@ -42,12 +42,14 @@ class NameValueCard extends StatelessWidget {
   }
 }
 
-class ListDialog<T> {
+class ListDialog<T> extends StatelessWidget {
   final List<ListDialogElement<T>> elements;
   final String title;
   final T? selected;
+  final Function(T)? onChoiceMade;
 
   const ListDialog({
+    this.onChoiceMade,
     Key? key,
     required this.title,
     required this.elements,
@@ -58,8 +60,10 @@ class ListDialog<T> {
     String title,
     List<String> list, {
     String? selected,
+    Function(String)? onChoiceMade,
   }) {
     return ListDialog(
+        onChoiceMade: onChoiceMade,
         title: title,
         selected: selected,
         elements: list
@@ -70,7 +74,8 @@ class ListDialog<T> {
             .toList());
   }
 
-  Widget _build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return SimpleDialog(
       title: Text(title),
       children: elements.map((element) => _buildOption(element, context)).toList(),
@@ -81,18 +86,10 @@ class ListDialog<T> {
     return Container(
       color: element.value == selected ? Theme.of(context).colorScheme.primary.withAlpha(30) : Colors.transparent,
       child: SimpleDialogOption(
-        onPressed: () => _onChoiceMade(element.value, context),
+        onPressed: () => Navigator.pop(context, element.value),
         child: element.child,
       ),
     );
-  }
-
-  void _onChoiceMade(T choice, BuildContext context) {
-    Navigator.pop(context, choice);
-  }
-
-  Future<T?> show(BuildContext context) {
-    return showDialog<T?>(context: context, builder: _build);
   }
 }
 

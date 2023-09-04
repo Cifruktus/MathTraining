@@ -9,38 +9,77 @@ import 'package:math_training/widgets/theme.dart';
 import 'package:math_training/widgets/game_input_scaffold.dart';
 
 
-class MathGameView extends StatelessWidget {
+class MathGamePage extends StatelessWidget {
+
   static Route route() {
     return MaterialPageRoute<void>(
-      builder: (_) => BlocProvider(
-        create: (context) => MathGameBloc.fromSettings(context.read<AppSettingsCubit>().state),
-        child: const MathGameView(),
-      ),
+      builder: (c) => const MathGamePage(),
     );
   }
 
-  static void finishGame(BuildContext context) {
-    var game = context.read<MathGameBloc>();
-    var result = game.getResult();
-    if (result != null) {
-      context.read<ScoresCubit>().addScore(result);
-    }
-    Navigator.of(context).pop(game.getResult());
-  }
+  const MathGamePage({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => MathGameBloc.fromSettings(context.read<AppSettingsCubit>().state),
+      child: BlocListener<MathGameBloc, MathGameState>(
+        child: const MathGameView(),
+        listenWhen: (a, b) => a.stateType != b.stateType,
+        listener: (context, state) {
+          if (state.stateType == GameStateType.finished) {
+            var result = context.read<MathGameBloc>().getResult();
+            if (result != null) {
+              context.read<ScoresCubit>().addScore(result);
+            }
+          }
+        },
+      ),
+    );
+  }
+}
+
+class MathGameView extends StatelessWidget {
   const MathGameView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        finishGame(context);
-        return false;
-      },
-      child: PageContent(),
+    var state = context.select((MathGameBloc bloc) => bloc.state.stateType);
+
+    return GameInputScaffold(
+      onApply: (s) => applyPressed(context, s),
+      onChange: (s) => onChange(context, s),
+      numericInputEnabled: state == GameStateType.going,
+      appBar: AppBar(
+        title: GameAppTitle(),
+      ),
+      body: MainGameWindow(),
     );
   }
+
+  void onChange(BuildContext context, String text){
+    context.read<MathGameBloc>().add(MathGameNewInputData(text));
+  }
+
+  void applyPressed(BuildContext context, String text) {
+    var gameBloc = context.read<MathGameBloc>();
+
+    switch (gameBloc.state.stateType) {
+      case GameStateType.ready:
+        gameBloc.add(MathGameStart());
+        return;
+      case GameStateType.going:
+        gameBloc.add(MathGameOnOkInput(text));
+        return;
+      case GameStateType.finished:
+        Navigator.of(context).pop();
+        return;
+      default:
+        return;
+    }
+  }
 }
+
 
 class MainGameWindow extends StatelessWidget {
   const MainGameWindow({Key? key}) : super(key: key);
@@ -235,45 +274,3 @@ class QuestionTextField extends StatelessWidget {
     );
   }
 }
-
-class PageContent extends StatelessWidget {
-  const PageContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var state = context.select((MathGameBloc bloc) => bloc.state.stateType);
-
-    return GameInputScaffold(
-      onApply: (s) => applyPressed(context, s),
-      onChange: (s) => onChange(context, s),
-      numericInputEnabled: state == GameStateType.going,
-      appBar: AppBar(
-        title: GameAppTitle(),
-      ),
-      body: MainGameWindow(),
-    );
-  }
-
-  void onChange(BuildContext context, String text){
-    context.read<MathGameBloc>().add(MathGameNewInputData(text));
-  }
-
-  void applyPressed(BuildContext context, String text) {
-    var gameBloc = context.read<MathGameBloc>();
-
-    switch (gameBloc.state.stateType) {
-      case GameStateType.ready:
-        gameBloc.add(MathGameStart());
-        return;
-      case GameStateType.going:
-        gameBloc.add(MathGameOnOkInput(text));
-        return;
-      case GameStateType.finished:
-        MathGameView.finishGame(context);
-        return;
-      default:
-        return;
-    }
-  }
-}
-

@@ -13,22 +13,6 @@ import 'package:math_training/widgets/theme.dart';
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
-  static void openSettings(BuildContext context) {
-    Navigator.of(context).push(SettingsPage.route());
-  }
-
-  static void openGameView(BuildContext context) {
-    Navigator.of(context).push(MathGameView.route());
-  }
-
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => page());
-  }
-
-  static Widget page() {
-    return MainPage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,7 +148,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 actions: <Widget>[
                   new IconButton(
                     icon: new Icon(Icons.settings),
-                    onPressed: () => MainPage.openSettings(context),
+                    onPressed: () => Navigator.push(context, SettingsPage.route()),
                   ),
                 ],
                 title: Row(children: [
@@ -212,7 +196,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: StartButton(
               size: kButtonRadius * 2,
               color: buttonColor,
-              onPressed: () => MainPage.openGameView(context),
+              onPressed: () => Navigator.push(context, MathGamePage.route()),
             ),
           ),
         ],

@@ -40,32 +40,34 @@ class ClearScoresButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NameValueCard(
-      onTap: () => _showClearScoresDialog(context),
+      onTap: () => showDialog(context: context, builder: (c) => ClearScoresButton()),
       name: Text("Clear scores"),
       value: Container(),
     );
   }
+}
 
-  void _showClearScoresDialog(BuildContext context) async {
-    bool? answer = await showDialog<bool>(
-        context: context,
-        builder: (_) => AlertDialog(
-              content: Text("All scores will be deleted"),
-              actions: [
-                TextButton(
-                  child: Text("Cancel"),
-                  onPressed: () => Navigator.pop(context, false),
-                ),
-                TextButton(
-                  child: Text("Ok"),
-                  onPressed: () => Navigator.pop(context, true),
-                ),
-              ],
-            ));
+class ClearScoresDialog extends StatelessWidget {
+  const ClearScoresDialog({Key? key}): super(key: key);
 
-    if (answer == true) {
-      context.read<ScoresCubit>().clearScores();
-    }
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Text("All scores will be deleted"),
+      actions: [
+        TextButton(
+          child: Text("Cancel"),
+          onPressed: () => Navigator.pop(context),
+        ),
+        TextButton(
+          child: Text("Ok"),
+          onPressed: () {
+            Navigator.pop(context);
+            context.read<ScoresCubit>().clearScores();
+          },
+        ),
+      ],
+    );
   }
 }
 
@@ -90,29 +92,33 @@ class MathDurationEditor extends StatelessWidget {
     var duration = context.select((AppSettingsCubit c) => c.state.mathSessionDuration);
 
     return NameValueCard(
-      onTap: () => _showDurationSelectDialog(context),
+      onTap: () => showDialog(context: context, builder: (c) => MathSessionDurationDialog()),
       name: Text("Game duration:"),
       value: Text("${duration.inMinutes} min"),
     );
   }
+}
 
-  void _showDurationSelectDialog(BuildContext context) {
+class MathSessionDurationDialog extends StatelessWidget {
+  const MathSessionDurationDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     List<ListDialogElement<Duration>> elements = durationOptions
         .map((option) => ListDialogElement(
-              value: option,
-              child: Text("${option.inMinutes} min"),
-            ))
+      value: option,
+      child: Text("${option.inMinutes} min"),
+    ))
         .toList();
 
     var settings = context.read<AppSettingsCubit>();
 
-    ListDialog(
+    return ListDialog<Duration>(
       elements: elements,
       title: "Duration",
       selected: settings.state.mathSessionDuration,
-    ).show(context).then((data) {
-      if (data != null) settings.mathSessionDuration = data;
-    });
+      onChoiceMade: (data) => settings.mathSessionDuration = data,
+    );
   }
 }
 
@@ -122,25 +128,30 @@ class MathSessionEditor extends StatelessWidget {
     var sessionType = context.select((AppSettingsCubit c) => c.state.mathSessionType);
 
     return NameValueCard(
-      onTap: () => _showDurationSelectDialog(context),
+      onTap: () => showDialog(context: context, builder: (c) => MathSessionTypeDialog()),
       name: Text("Session type:"),
       value: Text(sessionType),
     );
   }
+}
 
-  void _showDurationSelectDialog(BuildContext context) {
+class MathSessionTypeDialog extends StatelessWidget {
+  const MathSessionTypeDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     List<ListDialogElement<String>> elements = sessionDifficultyNames
         .map((option) => ListDialogElement(value: option, child: Text("${option}")))
         .toList();
 
     var settings = context.read<AppSettingsCubit>();
 
-    ListDialog(
+    return ListDialog<String>(
       elements: elements,
       title: "Session type",
       selected: settings.state.mathSessionType,
-    ).show(context).then((data) {
-      if (data != null) settings.mathSessionType = data;
-    });
+      onChoiceMade: (data) => settings.mathSessionType = data,
+    );
   }
 }
+
