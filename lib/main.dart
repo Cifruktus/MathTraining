@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => ScoresCubit()),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Math Training',
           theme: materialThemeData,
           home: MainPage(),
         ));
