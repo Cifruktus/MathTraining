@@ -1,11 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
 
-@JsonSerializable(createToJson: false, createFactory: false)
+part 'result.g.dart';
+
+@JsonSerializable()
 class MathTestResult {
   final int correct;
   final int incorrect;
   final int duration;
-  final String type;
+  final MathSessionType type;
   final DateTime time;
 
   int get questions => correct + incorrect;
@@ -20,22 +23,7 @@ class MathTestResult {
     required this.type,
   });
 
-  factory MathTestResult.fromJson(Map<String, dynamic> map) {
-    return MathTestResult(
-        correct: map["correct"],
-        incorrect: map["incorrect"],
-        duration: map["duration"],
-        type: map["type"],
-        time: DateTime.fromMillisecondsSinceEpoch(map["time"]));
-  }
+  factory MathTestResult.fromJson(Map<String, dynamic> json) => _$MathTestResultFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      "correct": correct,
-      "incorrect": incorrect,
-      "duration": duration,
-      "type": type,
-      "time": time.millisecondsSinceEpoch,
-    };
-  }
+  Map<String, dynamic> toJson() => _$MathTestResultToJson(this);
 }

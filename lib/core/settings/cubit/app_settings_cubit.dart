@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:math_training/core/settings/models/math_session_type.dart';
+import 'package:math_training/core/settings/models/session_durations.dart';
 
 part 'app_settings_cubit.g.dart';
 
@@ -9,7 +10,7 @@ class AppSettingsCubit extends HydratedCubit<AppSettings> {
   AppSettingsCubit() : super(AppSettings.defaultValue());
 
   set mathSessionDuration (Duration val) => emit(state.copyWith(mathSessionDuration: val));
-  set mathSessionType (String val) => emit(state.copyWith(mathSessionType: val));
+  set mathSessionType (MathSessionType val) => emit(state.copyWith(mathSessionType: val));
 
   @override
   AppSettings fromJson(Map<String, dynamic> json) => AppSettings.fromJson(json);
@@ -20,21 +21,22 @@ class AppSettingsCubit extends HydratedCubit<AppSettings> {
 
 @immutable @JsonSerializable()
 class AppSettings {
-  final String mathSessionType;
+  final MathSessionType mathSessionType;
   final Duration mathSessionDuration;
 
   AppSettings copyWith({
-    String? mathSessionType,
+    MathSessionType? mathSessionType,
     Duration? mathSessionDuration,
   }) {
+    print(mathSessionType);
     return AppSettings(
         mathSessionType: mathSessionType ?? this.mathSessionType,
         mathSessionDuration: mathSessionDuration ?? this.mathSessionDuration);
   }
 
-  factory AppSettings.defaultValue () => const AppSettings(
+  factory AppSettings.defaultValue () => AppSettings(
     mathSessionDuration: defaultDuration,
-    mathSessionType: sessionDefaultDifficulty,
+    mathSessionType: MathSessionType.defaultType,
   );
 
   factory AppSettings.fromJson(Map<String, dynamic> json) => _$AppSettingsFromJson(json);

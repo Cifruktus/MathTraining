@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:math_training/core/scores/models/result.dart';
 import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
 import 'package:math_training/features/math_game/bloc/game_events.dart';
 import 'package:math_training/features/math_game/bloc/game_state.dart';
 import 'package:math_training/features/math_game/util/ticker.dart';
@@ -10,29 +11,34 @@ import 'package:math_training/features/math_game/util/training.dart';
 
 class MathGameBloc extends Bloc<MathGameEvent, MathGameState> {
   final Ticker _ticker;
+  final MathSessionType sessionType;
   final QuestionGenerator _questions;
   final Duration _duration;
 
   Duration get duration => _duration;
 
-  String get sessionType => _questions.name;
-
   StreamSubscription<int>? _tickerSubscription;
 
   factory MathGameBloc.fromSettings(AppSettings settings) {
+    var sessionType = settings.mathSessionType;
     var questions = getQuestionGenerator(settings.mathSessionType);
     var duration = settings.mathSessionDuration;
 
     return MathGameBloc(
+      sessionType: sessionType,
       questions: questions,
       duration: duration,
     );
   }
 
-  MathGameBloc({required QuestionGenerator questions, required Duration duration})
-      : _ticker = const Ticker(),
+  MathGameBloc({
+    required QuestionGenerator questions,
+    required MathSessionType sessionType,
+    required Duration duration,
+  })  : _ticker = const Ticker(),
         _questions = questions,
         _duration = duration,
+        sessionType = sessionType,
         super(MathGameState(
           answered: [],
           inputValue: '',
@@ -73,7 +79,7 @@ class MathGameBloc extends Bloc<MathGameEvent, MathGameState> {
       correct: correct,
       incorrect: incorrect,
       time: time,
-      type: _questions.name,
+      type: sessionType,
     );
   }
 

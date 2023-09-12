@@ -34,9 +34,9 @@ class TransitionAppBar extends StatelessWidget {
     EdgeInsets padding = data.padding;
 
     var sessionType = context.select((AppSettingsCubit s) => s.state.mathSessionType);
-    var problemsSolved = context.select((ScoresCubit s) => s.state.getProblemsSolvedBySessionName(sessionType));
-    var averageSpeed = context.select((ScoresCubit s) => s.state.getAverageSpeedBySessionName(sessionType));
-    var averageAccuracy = context.select((ScoresCubit s) => s.state.getAverageAccuracyBySessionName(sessionType));
+    var problemsSolved = context.select((ScoresCubit s) => s.state.getProblemsSolvedBySessionType(sessionType));
+    var averageSpeed = context.select((ScoresCubit s) => s.state.getAverageSpeedBySessionType(sessionType));
+    var averageAccuracy = context.select((ScoresCubit s) => s.state.getAverageAccuracyBySessionType(sessionType));
 
     return SliverPersistentHeader(
       pinned: true,
@@ -45,7 +45,7 @@ class TransitionAppBar extends StatelessWidget {
         problemsSolved: problemsSolved,
         averageAccuracy: averageAccuracy,
         averageSpeed: averageSpeed,
-        sessionType: sessionType,
+        sessionType: sessionType.name,
       ),
     );
   }
@@ -225,7 +225,7 @@ class ScoresList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var sessionType = context.select((AppSettingsCubit s) => s.state.mathSessionType);
-    var scores = context.select((ScoresCubit scores) => scores.state.getResultsBySessionName(sessionType)).toList();
+    var scores = context.select((ScoresCubit scores) => scores.state.getResultsBySessionType(sessionType)).toList();
 
     var theme = Theme.of(context).extension<AppTheme>()!.data;
 

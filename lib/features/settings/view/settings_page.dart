@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/core/settings/models/math_session_type.dart';
+import 'package:math_training/core/settings/models/session_durations.dart';
 import 'package:math_training/features/settings/view/widgets.dart';
 import 'package:math_training/core/scores/bloc/scored_bloc.dart';
 import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
@@ -130,7 +131,7 @@ class MathSessionEditor extends StatelessWidget {
     return NameValueCard(
       onTap: () => showDialog(context: context, builder: (c) => MathSessionTypeDialog()),
       name: Text("Session type:"),
-      value: Text(sessionType),
+      value: Text(sessionType.name),
     );
   }
 }
@@ -140,13 +141,13 @@ class MathSessionTypeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ListDialogElement<String>> elements = sessionDifficultyNames
-        .map((option) => ListDialogElement(value: option, child: Text("${option}")))
+    List<ListDialogElement<MathSessionType>> elements = MathSessionType.values
+        .map((option) => ListDialogElement(value: option, child: Text("${option.name}")))
         .toList();
 
     var settings = context.read<AppSettingsCubit>();
 
-    return ListDialog<String>(
+    return ListDialog<MathSessionType>(
       elements: elements,
       title: "Session type",
       selected: settings.state.mathSessionType,

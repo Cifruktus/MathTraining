@@ -86,7 +86,10 @@ class ListDialog<T> extends StatelessWidget {
     return Container(
       color: element.value == selected ? Theme.of(context).colorScheme.primary.withAlpha(30) : Colors.transparent,
       child: SimpleDialogOption(
-        onPressed: () => Navigator.pop(context, element.value),
+        onPressed: () {
+          onChoiceMade?.call(element.value);
+          Navigator.pop(context, element.value);
+        },
         child: element.child,
       ),
     );

@@ -3,23 +3,20 @@ import 'dart:math';
 import 'package:math_training/core/settings/models/math_session_type.dart';
 import 'package:math_training/features/math_game/util/question.dart';
 
-QuestionGenerator getQuestionGenerator(String type) {
+QuestionGenerator getQuestionGenerator(MathSessionType type) {
   switch (type) {
-    case easyQuestionGeneratorName:
+    case MathSessionType.easy:
       return EasyQuestionGenerator();
-    case normalQuestionGeneratorName:
+    case MathSessionType.normal:
       return NormalQuestionGenerator();
-    case hardQuestionGeneratorName:
+    case MathSessionType.hard:
       return HardQuestionGenerator();
-    case hexReadQuestionGeneratorName:
+    case MathSessionType.hexDecode:
       return HexQuestionGenerator();
   }
-  return NormalQuestionGenerator();
 }
 
 abstract class QuestionGenerator {
-  String get name;
-
   Random r = Random();
 
   Question next();
@@ -30,9 +27,6 @@ abstract class QuestionGenerator {
 }
 
 class HardQuestionGenerator extends QuestionGenerator {
-  @override
-  String get name => hardQuestionGeneratorName;
-
   @override
   Question next() {
     switch (r.nextInt(4)) {
@@ -50,9 +44,6 @@ class HardQuestionGenerator extends QuestionGenerator {
 
 class NormalQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => normalQuestionGeneratorName;
-
-  @override
   Question next() {
     switch (r.nextInt(3)) {
       case 0:
@@ -67,9 +58,6 @@ class NormalQuestionGenerator extends QuestionGenerator {
 
 class EasyQuestionGenerator extends QuestionGenerator {
   @override
-  String get name => easyQuestionGeneratorName;
-
-  @override
   Question next() {
     switch (r.nextInt(2)) {
       case 0:
@@ -81,9 +69,6 @@ class EasyQuestionGenerator extends QuestionGenerator {
 }
 
 class HexQuestionGenerator extends QuestionGenerator {
-  @override
-  String get name => hexReadQuestionGeneratorName;
-
   @override
   Question next() {
     int val = r.nextInt(255);

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:math_training/core/scores/models/result.dart';
+import 'package:math_training/core/settings/models/math_session_type.dart';
 
 
 part 'scored_bloc.g.dart';
@@ -12,18 +13,18 @@ class Scores {
 
   const Scores({this.mathTestScores = const []});
 
-  Iterable<MathTestResult> getResultsBySessionName(String name){
-    return mathTestScores.where((r) => r.type == name);
+  Iterable<MathTestResult> getResultsBySessionType(MathSessionType type){
+    return mathTestScores.where((r) => r.type == type);
   }
 
-  int getProblemsSolvedBySessionName(String name){
+  int getProblemsSolvedBySessionType(MathSessionType type){
     return mathTestScores
-        .where((r) => r.type == name)
+        .where((r) => r.type == type)
         .fold(0, (int sum, r) => sum + r.correct);
   }
 
-  double getAverageAccuracyBySessionName(String name) {
-    var selectedScores = mathTestScores.where((r) => r.type == name);
+  double getAverageAccuracyBySessionType(MathSessionType type) {
+    var selectedScores = mathTestScores.where((r) => r.type == type);
     var problemCount = selectedScores.fold(0, (int sum, r) => sum + r.questions);
     var correct = selectedScores.fold(0, (int sum, r) => sum + r.correct);
 
@@ -31,8 +32,8 @@ class Scores {
     return correct / problemCount;
   }
 
-  double getAverageSpeedBySessionName(String name) {
-    var selectedScores = mathTestScores.where((r) => r.type == name);
+  double getAverageSpeedBySessionType(MathSessionType type) {
+    var selectedScores = mathTestScores.where((r) => r.type == type);
     var totalProblems = selectedScores.fold(0, (int sum, r) => sum + r.correct);
     var totalTime = selectedScores.fold(0, (int sum, r) => sum + r.duration) / 60; // converting to minutes
 
