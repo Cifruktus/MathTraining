@@ -41,7 +41,7 @@ class ClearScoresButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NameValueCard(
-      onTap: () => showDialog(context: context, builder: (c) => ClearScoresButton()),
+      onTap: () => showDialog(context: context, builder: (c) => ClearScoresDialog()),
       name: Text("Clear scores"),
       value: Container(),
     );
@@ -107,9 +107,9 @@ class MathSessionDurationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ListDialogElement<Duration>> elements = durationOptions
         .map((option) => ListDialogElement(
-      value: option,
-      child: Text("${option.inMinutes} min"),
-    ))
+              value: option,
+              child: Text("${option.inMinutes} min"),
+            ))
         .toList();
 
     var settings = context.read<AppSettingsCubit>();
