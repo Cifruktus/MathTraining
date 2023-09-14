@@ -76,7 +76,7 @@ class GithubPageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NameValueCard(
-      onTap: () => launchUrl(githubPage),
+      onTap: () => launchUrl(githubPage, mode: LaunchMode.externalApplication),
       name: Text("View project on Github",
         style: TextStyle(
           color: Colors.blueAccent[700]
