@@ -8,6 +8,7 @@ import 'package:math_training/core/settings/cubit/app_settings_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final Uri githubPage = Uri.parse('https://github.com/Cifruktus/MathTraining');
+final Uri privacyPolicyPage = Uri.parse('https://cifruktus.github.io/MathTrainingWebapp/privacy-policy');
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class SettingsPage extends StatelessWidget {
           MathSessionEditor(),
           ClearScoresButton(),
           GithubPageButton(),
+          PrivacyPageButton(),
         ],
       ),
     );
@@ -80,6 +82,21 @@ class GithubPageButton extends StatelessWidget {
       name: Text("View project on Github",
         style: TextStyle(
           color: Colors.blueAccent[700]
+        ),
+      ),
+      value: Container(),
+    );
+  }
+}
+
+class PrivacyPageButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return NameValueCard(
+      onTap: () => launchUrl(privacyPolicyPage, mode: LaunchMode.externalApplication),
+      name: Text("Privacy Policy",
+        style: TextStyle(
+            color: Colors.blueAccent[700]
         ),
       ),
       value: Container(),
