@@ -116,7 +116,7 @@ class BeforeGameView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("Session type: ${game.sessionType}", style: theme.cardText,),
+                  Text("Session type: ${game.sessionType.name}", style: theme.cardText,),
                   Text("Duration: ${game.duration.inMinutes} min", style: theme.cardText),
                 ],
               ),
