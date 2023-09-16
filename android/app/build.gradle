@@ -59,7 +59,11 @@ android {
 
     def keystoreAvailable = keystoreProperties['storeFile']
 
-    if (!keystoreAvailable) println('\u001b[31mKeystore wasn\'t found, using debug singning config\u001b[0m')
+    if (keystoreAvailable) {
+        println('\u001b[32mSigning with provided key\u001b[0m')
+    } else {
+        println('\u001B[31mKeystore wasn\'t found, using debug singning config\u001b[0m')
+    }
 
     signingConfigs {
         release {
